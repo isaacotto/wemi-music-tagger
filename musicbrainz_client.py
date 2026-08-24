@@ -22,9 +22,7 @@ last_request_time = 0
 
 def init_musicbrainz():
     """Initialize MusicBrainz client with proper headers."""
-    mbrainz.set_useragent(
-        "wemi-music-tagger/1.0 (https://github.com/isaacotto/wemi-music-tagger)"
-    )
+    mbrainz.set_useragent("wemi-music-tagger", "1.0")
     logger.info("MusicBrainz client initialized")
 
 
