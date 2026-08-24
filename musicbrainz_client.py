@@ -55,7 +55,6 @@ def fetch_release_by_id(release_id: str) -> Optional[Dict[str, Any]]:
                 "labels",
                 "artists",
                 "release-groups",
-                "works",
                 "artist-credits"
             ]
         )
@@ -88,6 +87,29 @@ def fetch_recording_by_id(recording_id: str) -> Optional[Dict[str, Any]]:
         return result.get('recording')
     except (mbrainz.NetworkError, mbrainz.ResponseError) as e:
         logger.error(f"Error fetching recording {recording_id}: {e}")
+        return None
+
+
+def fetch_work_by_id(work_id: str) -> Optional[Dict[str, Any]]:
+    """Fetch work data from MusicBrainz.
+    
+    Args:
+        work_id: MusicBrainz work UUID
+        
+    Returns:
+        Work dict or None if not found
+    """
+    _respect_rate_limit()
+    
+    try:
+        logger.debug(f"Fetching work {work_id} from MusicBrainz")
+        result = mbrainz.get_work_by_id(
+            work_id,
+            includes=["artists", "recordings"]
+        )
+        return result.get('work')
+    except (mbrainz.NetworkError, mbrainz.ResponseError) as e:
+        logger.error(f"Error fetching work {work_id}: {e}")
         return None
 
 
